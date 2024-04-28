@@ -2,7 +2,6 @@
 
 namespace TakaakiMizuno\LLMJsonAdapter\Models;
 
-
 class Response
 {
     protected string $_name;
@@ -15,8 +14,7 @@ class Response
         string $name,
         string $description,
         array $schema
-    )
-    {
+    ) {
         $this->_name = $name;
         $this->_description = $description;
         $this->_schema = $schema;

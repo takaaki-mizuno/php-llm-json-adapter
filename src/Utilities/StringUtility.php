@@ -4,14 +4,17 @@ namespace TakaakiMizuno\LLMJsonAdapter\Utilities;
 
 class StringUtility
 {
-    static public function camelCaseToSnakeCase($string): string
+    public static function camelCaseToSnakeCase($string): string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
     }
 
-    static public function getJSONObjectFromMarkdownCodeBlock(string $markdown): array
+    public static function getJSONObjectFromMarkdownCodeBlock(string $markdown): ?array
     {
         preg_match('/```(json)?\r?\n(.*?)\r?\n```/s', $markdown, $matches);
+        if($matches === null || count($matches) < 3) {
+            return null;
+        }
         $json = $matches[2] ?? '';
         return json_decode($json, true);
     }

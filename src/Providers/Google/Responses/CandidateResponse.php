@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TakaakiMizuno\LLMJsonAdapter\Providers\Google\Responses;
 
-
 use TakaakiMizuno\LLMJsonAdapter\Utilities\ArrayUtility;
 
 class CandidateResponse
@@ -23,7 +22,7 @@ class CandidateResponse
         $this->content = new ContentResponse($rawContent);
         $this->finishReason = ArrayUtility::get($rawResponse, 'finishReason', "");
         $this->safetyRatings = [];
-        foreach( ArrayUtility::get($rawResponse, 'safetyRatings', []) as $rawSafetyRating ) {
+        foreach(ArrayUtility::get($rawResponse, 'safetyRatings', []) as $rawSafetyRating) {
             $this->safetyRatings[] = new RatingResponse($rawSafetyRating);
         }
     }

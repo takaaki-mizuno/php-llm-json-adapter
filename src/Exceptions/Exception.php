@@ -1,4 +1,5 @@
 <?php
+
 namespace TakaakiMizuno\LLMJsonAdapter\Exceptions;
 
 use Exception as BaseException;

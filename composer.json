@@ -4,7 +4,8 @@
     "require-dev": {
         "vlucas/phpdotenv": "^5.6",
         "phpunit/phpunit": "^10.5",
-        "phpstan/phpstan": "^1.10"
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.54"
     },
     "license": "MIT",
     "autoload": {
@@ -27,6 +28,7 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.8",
         "orhanerday/open-ai": "^5.1",
-        "swaggest/json-schema": "^0.12.42"
+        "swaggest/json-schema": "^0.12.42",
+        "aws/aws-sdk-php": "^3.305"
     }
 }

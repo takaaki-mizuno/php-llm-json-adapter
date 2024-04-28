@@ -12,16 +12,85 @@ Therefore, I have created a wrapper library to switch LLMs and get results in JS
 
 ## Installation
 
-
+```sh
+composer require takaaki-mizuno/llm-json-adapter
+```
 
 ## How to use
 
 Use the following code to get the results in JSON.
 
+### OpenAI
+
 ```php
-$openaiInstance = new LLMJsonAdapter(
+$instance = new LLMJsonAdapter(
     providerName: "openai",
-    attributes: ["api_key" => "[API-KEY"],
+    attributes: [
+        "api_key" => "[API-KEY]",
+        "model" => "gpt-3.5-turbo",
+    ],
+    maximumRetryCount: 3,
+    model: "gpt-3.5-turbo",
+    defaultLanguage: "en"
+);
+
+$response = new \TakaakiMizuno\LLMJsonAdapter\Models\Response(
+    name: "response data name",
+    description: "response data description",
+    schema: [JSON SCHEMA]
+);
+```
+
+### Google Gemini
+
+```php
+$instance = new LLMJsonAdapter(
+    providerName: "google",
+    attributes: [
+        "api_key" => "[API-KEY]",
+        "model" => "gemini-1.5-pro-latest",
+    ],
+    maximumRetryCount: 3,
+    defaultLanguage: "en"
+);
+
+$response = new \TakaakiMizuno\LLMJsonAdapter\Models\Response(
+    name: "response data name",
+    description: "response data description",
+    schema: [JSON SCHEMA]
+);
+```
+
+### BedRock
+
+```php
+$instance = new LLMJsonAdapter(
+    providerName: "bedrock",
+    attributes: [
+        'accessKeyId' => '[ACCESS-KEY]',
+        'secretAccessKey' => '[SECRET-KEY]',
+        'model' => 'anthropic.claude-3-haiku-20240307-v1:0',
+    ],
+    maximumRetryCount: 3,
+    defaultLanguage: "en"
+);
+
+$response = new \TakaakiMizuno\LLMJsonAdapter\Models\Response(
+    name: "response data name",
+    description: "response data description",
+    schema: [JSON SCHEMA]
+);
+```
+
+### Ollama
+
+```php
+$instance = new LLMJsonAdapter(
+    providerName: "ollama",
+    attributes: [
+        'url' => "http://localhost:11434",
+        'model' => 'llama3',
+    ],
     maximumRetryCount: 3,
     defaultLanguage: "en"
 );

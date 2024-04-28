@@ -2,6 +2,7 @@
 
 namespace TakaakiMizuno\LLMJsonAdapter\Providers\Google;
 
+use GuzzleHttp\Exception\GuzzleException;
 use TakaakiMizuno\LLMJsonAdapter\Exceptions\RetryableException;
 use TakaakiMizuno\LLMJsonAdapter\Models\Response;
 use TakaakiMizuno\LLMJsonAdapter\Providers\Provider as BaseProvider;
@@ -11,7 +12,7 @@ class Provider extends BaseProvider
 {
     protected array $requiredAttributes = [
         'api_key' => '',
-        'model' => 'gemini-pro',
+        'model' => 'gemini-1.5-pro-latest',
     ];
 
     public function __construct(
@@ -25,6 +26,10 @@ class Provider extends BaseProvider
         return new APIClient($apiKey);
     }
 
+    /**
+     * @throws RetryableException
+     * @throws GuzzleException
+     */
     public function generate(
         string   $prompt,
         Response $response,
@@ -34,29 +39,12 @@ class Provider extends BaseProvider
         $apiKey = $this->getAttribute('api_key', '');
         $client = $this->getClient($apiKey);
 
-        $generatedPrompt = $prompt . "\n\n";
+        $generateTextPrompt = $this->generateTextPrompt($prompt, $response, $language, $actAs);
 
-        if ($actAs !== null) {
-            $generatedPrompt .= "Please answer as {$actAs}.\n\n";
-        }
-
-        if ($language !== null) {
-            $fullLanguage = $this->getFullLanguageText($language);
-            if( $fullLanguage === null ){
-                throw new RetryableException("Language {$language} is not supported.");
-            }
-            $generatedPrompt .= "Response should be in {$fullLanguage}.\n\n";
-        }
-
-        $jsonFormat = json_encode($response->getSchema());
-        $generatedPrompt .= "And use Json format as the response format which defined as following: \n\n";
-        $generatedPrompt .= "\n{$jsonFormat}\n\n";
-        $generatedPrompt .= "and response json data should be wrapped by the markdown code block\n\n";
-
-        $result = $client->generateContent($generatedPrompt);
-        foreach( $result->candidates as $candidate ) {
+        $result = $client->generateContent($generateTextPrompt);
+        foreach($result->candidates as $candidate) {
             $response = StringUtility::getJSONObjectFromMarkdownCodeBlock($candidate->content->toString());
-            if( is_array($response) && count($response) > 0 ) {
+            if(is_array($response) && count($response) > 0) {
                 return $response;
             }
         }

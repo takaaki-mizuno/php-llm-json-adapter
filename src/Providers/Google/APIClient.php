@@ -37,7 +37,9 @@ class APIClient
             . ':generateContent?key=' . $this->apiKey;
 
         $request = new ContentRequest($prompt);
-        $response = $client->request('POST', $path,
+        $response = $client->request(
+            'POST',
+            $path,
             [
                 'json' => $request->toArray(),
             ]

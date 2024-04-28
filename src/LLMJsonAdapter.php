@@ -10,6 +10,9 @@ use TakaakiMizuno\LLMJsonAdapter\Models\Response;
 use TakaakiMizuno\LLMJsonAdapter\Providers\Provider;
 use TakaakiMizuno\LLMJsonAdapter\Providers\Google\Provider as GoogleProvider;
 use TakaakiMizuno\LLMJsonAdapter\Providers\OpenAI\Provider as OpenAIProvider;
+use TakaakiMizuno\LLMJsonAdapter\Providers\Ollama\Provider as OllamaProvider;
+use TakaakiMizuno\LLMJsonAdapter\Providers\BedRock\Provider as BedRockProvider;
+
 use Swaggest\JsonSchema\Schema;
 
 class LLMJsonAdapter
@@ -28,6 +31,8 @@ class LLMJsonAdapter
         return match ($providerName) {
             'google' => new GoogleProvider($attributes),
             'openai' => new OpenAIProvider($attributes),
+            'ollama' => new OllamaProvider($attributes),
+            'bedrock' => new BedRockProvider($attributes),
             default => throw new Exception('Provider not found.'),
         };
     }
@@ -77,7 +82,7 @@ class LLMJsonAdapter
     ) {
         $language = $language ?? $this->defaultLanguage;
 
-        if( $this->validateJsonSchema($response->getSchema()) ) {
+        if($this->validateJsonSchema($response->getSchema())) {
             throw new Exception('Invalid JSON Schema.');
         }
 

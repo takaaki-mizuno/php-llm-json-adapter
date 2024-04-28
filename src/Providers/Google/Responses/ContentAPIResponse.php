@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TakaakiMizuno\LLMJsonAdapter\Providers\Google\Responses;
 
-
 use TakaakiMizuno\LLMJsonAdapter\Utilities\ArrayUtility;
 
 class ContentAPIResponse
